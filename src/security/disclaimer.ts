@@ -4,8 +4,9 @@
  * Handles the legal disclaimer prompt and configuration for security operations.
  */
 
-import * as p from "@clack/prompts";
-import pc from "picocolors";
+import { confirm, isCancel, cancel } from "@clack/prompts";
+import chalk from "chalk";
+import { theme } from "../terminal/theme.js";
 import { SECURITY_DISCLAIMER } from "../agents/sandbox/security-profile.js";
 
 /**
@@ -38,20 +39,20 @@ export async function showSecurityDisclaimer(skipDisclaimer?: boolean): Promise<
   }
 
   console.log("");
-  console.log(pc.yellow(SECURITY_DISCLAIMER));
+  console.log(theme.warn(SECURITY_DISCLAIMER));
   console.log("");
 
-  const confirmed = await p.confirm({
+  const confirmed = await confirm({
     message: "Do you have authorization to scan the target system(s)?",
     initialValue: false,
   });
 
-  if (p.isCancel(confirmed) || !confirmed) {
-    p.cancel("Security scan cancelled. Authorization required.");
+  if (isCancel(confirmed) || !confirmed) {
+    cancel("Security scan cancelled. Authorization required.");
     return false;
   }
 
-  p.log.success("Authorization confirmed. Proceeding with security operations.");
+  console.log(theme.success("Authorization confirmed. Proceeding with security operations."));
   return true;
 }
 
@@ -59,11 +60,11 @@ export async function showSecurityDisclaimer(skipDisclaimer?: boolean): Promise<
  * Display a compact disclaimer banner (for non-interactive mode).
  */
 export function printSecurityBanner(): void {
-  console.log(pc.yellow("━".repeat(70)));
+  console.log(theme.warn("━".repeat(70)));
   console.log(
-    pc.yellow(pc.bold("  ⚠️  SECURITY SCANNING - Authorization required for all targets")),
+    theme.warn(chalk.bold("  ⚠️  SECURITY SCANNING - Authorization required for all targets")),
   );
-  console.log(pc.yellow("━".repeat(70)));
+  console.log(theme.warn("━".repeat(70)));
 }
 
 /**
@@ -135,15 +136,15 @@ export function isTargetInScope(target: string, config?: SecurityConfig): boolea
  */
 export function formatOutOfScopeWarning(target: string): string {
   return [
-    pc.red("━".repeat(60)),
-    pc.red(pc.bold("  ⛔ TARGET OUT OF SCOPE")),
-    pc.red("━".repeat(60)),
+    theme.error("━".repeat(60)),
+    theme.error(chalk.bold("  ⛔ TARGET OUT OF SCOPE")),
+    theme.error("━".repeat(60)),
     "",
-    `  Target: ${pc.bold(target)}`,
+    `  Target: ${chalk.bold(target)}`,
     "",
     "  This target is not in the authorized scope.",
     "  Scanning out-of-scope targets may be illegal.",
     "",
-    pc.red("━".repeat(60)),
+    theme.error("━".repeat(60)),
   ].join("\n");
 }
