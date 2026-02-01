@@ -115,6 +115,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     john \
     && rm -rf /var/lib/apt/lists/*
 
+# =============================================================================
+# PHASE 6: REPORTING & VISUALIZATION TOOLS
+# =============================================================================
+
+# jq is already installed in base utilities
+
+# Install gowitness (screenshot tool for web recon)
+RUN curl -sSL https://github.com/sensepost/gowitness/releases/latest/download/gowitness-linux-amd64 -o /usr/local/bin/gowitness && \
+    chmod +x /usr/local/bin/gowitness
+
 WORKDIR /workspace
 
 # Keep container running for exec commands
