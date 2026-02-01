@@ -76,6 +76,22 @@ services:
     init: true
     restart: unless-stopped
 
+  # OWASP Juice Shop - Intentionally vulnerable web application for demos
+  juice-shop:
+    image: bkimminich/juice-shop:latest
+    container_name: juice-shop-target
+    hostname: juice-shop
+    networks:
+      - security-net
+    ports:
+      - "${JUICE_SHOP_PORT:-3000}:3000"
+    mem_limit: 512m
+    cpus: 1
+    restart: unless-stopped
+    labels:
+      - "openclaw.security.target=demo"
+      - "openclaw.security.authorized=true"
+
 networks:
   security-net:
     driver: bridge
