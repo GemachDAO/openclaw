@@ -105,6 +105,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     metasploit-framework \
     && rm -rf /var/lib/apt/lists/*
 
+# =============================================================================
+# PHASE 5: CREDENTIAL TOOLS
+# =============================================================================
+
+# Install credential/password tools from Kali repos
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    hydra \
+    john \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /workspace
 
 # Keep container running for exec commands
