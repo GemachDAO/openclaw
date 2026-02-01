@@ -125,6 +125,26 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -sSL https://github.com/sensepost/gowitness/releases/latest/download/gowitness-linux-amd64 -o /usr/local/bin/gowitness && \
     chmod +x /usr/local/bin/gowitness
 
+# =============================================================================
+# PHASE 7: WORDLISTS
+# =============================================================================
+
+# Install SecLists (comprehensive wordlist collection)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    seclists \
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -sf /usr/share/seclists /wordlists
+
+# =============================================================================
+# FINAL SETUP
+# =============================================================================
+
+# Set ownership for non-root operation
+RUN chown -R openclaw:openclaw /workspace /reports
+
+# Switch to non-root user (can be overridden with --user root if needed)
+USER openclaw
+
 WORKDIR /workspace
 
 # Keep container running for exec commands
