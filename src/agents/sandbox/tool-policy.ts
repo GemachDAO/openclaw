@@ -6,7 +6,12 @@ import type {
 } from "./types.js";
 import { resolveAgentConfig } from "../agent-scope.js";
 import { expandToolGroups } from "../tool-policy.js";
-import { DEFAULT_TOOL_ALLOW, DEFAULT_TOOL_DENY } from "./constants.js";
+import {
+  DEFAULT_TOOL_ALLOW,
+  DEFAULT_TOOL_DENY,
+  SECURITY_TOOL_ALLOW,
+  SECURITY_TOOL_DENY,
+} from "./constants.js";
 
 type CompiledPattern =
   | { kind: "all" }
@@ -139,4 +144,29 @@ export function resolveSandboxToolPolicyForAgent(
       deny: denySource,
     },
   };
+}
+
+/**
+ * Get the security-specific tool policy for pentesting operations.
+ * This allows exec, process, read, write operations while denying
+ * browser, canvas, messaging, and gateway tools.
+ */
+export function getSecurityToolPolicy(): SandboxToolPolicyResolved {
+  return {
+    allow: [...SECURITY_TOOL_ALLOW],
+    deny: [...SECURITY_TOOL_DENY],
+    sources: {
+      allow: { source: "default", key: "security.tools.allow" },
+      deny: { source: "default", key: "security.tools.deny" },
+    },
+  };
+}
+
+/**
+ * Check if a tool is allowed for security operations.
+ * Uses the security-specific tool policy.
+ */
+export function isSecurityToolAllowed(name: string): boolean {
+  const policy = getSecurityToolPolicy();
+  return isToolAllowed(policy, name);
 }
