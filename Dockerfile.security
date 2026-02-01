@@ -1,0 +1,42 @@
+# OpenClaw Security Sandbox
+# AI-powered pentesting assistant sandbox based on Kali Linux
+#
+# Build: docker build -t openclaw-security:latest -f Dockerfile.security .
+# Run:   docker run -it --network bridge openclaw-security:latest
+
+FROM kalilinux/kali-rolling
+
+LABEL maintainer="OpenClaw Security"
+LABEL description="Kali-based sandbox for autonomous AI pentesting"
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+# Create non-root user for safer operation
+RUN groupadd -g 1000 openclaw && \
+    useradd -m -u 1000 -g openclaw -s /bin/bash openclaw
+
+# Update and install base utilities
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    ca-certificates \
+    curl \
+    git \
+    jq \
+    python3 \
+    python3-pip \
+    python3-venv \
+    ripgrep \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create workspace and wordlist mount points
+RUN mkdir -p /workspace /wordlists /reports && \
+    chown -R openclaw:openclaw /workspace /reports
+
+WORKDIR /workspace
+
+# Keep container running for exec commands
+CMD ["sleep", "infinity"]
