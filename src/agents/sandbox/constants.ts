@@ -11,6 +11,56 @@ export const DEFAULT_SANDBOX_WORKDIR = "/workspace";
 export const DEFAULT_SANDBOX_IDLE_HOURS = 24;
 export const DEFAULT_SANDBOX_MAX_AGE_DAYS = 7;
 
+// =============================================================================
+// OPENCLAW SECURITY - Autonomous Pentesting Sandbox
+// =============================================================================
+
+export const SECURITY_SANDBOX_IMAGE = "openclaw-security:latest";
+export const SECURITY_SANDBOX_CONTAINER_PREFIX = "openclaw-sec-";
+export const SECURITY_SANDBOX_WORKDIR = "/workspace";
+export const SECURITY_SANDBOX_WORDLISTS_PATH = "/wordlists";
+export const SECURITY_SANDBOX_REPORTS_PATH = "/reports";
+
+/** Security sandbox requires network access for scanning */
+export const SECURITY_SANDBOX_NETWORK = "bridge";
+
+/** Security tools need NET_RAW and NET_ADMIN capabilities for scanning */
+export const SECURITY_SANDBOX_CAP_ADD = ["NET_RAW", "NET_ADMIN"] as const;
+
+/** Tools allowed in security sandbox - expanded for pentesting operations */
+export const SECURITY_TOOL_ALLOW = [
+  "exec",
+  "process",
+  "read",
+  "write",
+  "edit",
+  "apply_patch",
+  "image",
+  "sessions_list",
+  "sessions_history",
+] as const;
+
+/** Tools denied in security sandbox - restrict messaging/gateway access */
+export const SECURITY_TOOL_DENY = [
+  "browser",
+  "canvas",
+  "nodes",
+  "cron",
+  "gateway",
+  ...CHANNEL_IDS,
+] as const;
+
+/** Default rate limits for production target scanning */
+export const SECURITY_RATE_LIMITS = {
+  nmap: "--max-rate 100",
+  masscan: "--rate 100",
+  ffuf: "-rate 10",
+  nuclei: "-rl 10",
+  hydra: "-t 4",
+} as const;
+
+// =============================================================================
+
 export const DEFAULT_TOOL_ALLOW = [
   "exec",
   "process",
