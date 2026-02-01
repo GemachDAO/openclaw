@@ -96,6 +96,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install XSStrike (Python-based XSS scanner)
 RUN pip3 install --no-cache-dir --break-system-packages xsstrike
 
+# =============================================================================
+# PHASE 4: EXPLOITATION FRAMEWORK
+# =============================================================================
+
+# Install Metasploit Framework (this is large ~500MB)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    metasploit-framework \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /workspace
 
 # Keep container running for exec commands
