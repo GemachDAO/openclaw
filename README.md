@@ -117,6 +117,42 @@ Default behavior on Telegram/WhatsApp/Signal/iMessage/Microsoft Teams/Discord/Go
 
 Run `openclaw doctor` to surface risky/misconfigured DM policies.
 
+## Security Testing (OpenClaw Security)
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Kali-Linux-557C94?style=for-the-badge&logo=kali-linux&logoColor=white" alt="Kali Linux">
+  <img src="https://img.shields.io/badge/Tools-21-orange?style=for-the-badge" alt="21 Tools">
+  <img src="https://img.shields.io/badge/Metasploit-Ready-red?style=for-the-badge" alt="Metasploit">
+  <img src="https://img.shields.io/badge/SecLists-Included-green?style=for-the-badge" alt="SecLists">
+</p>
+
+OpenClaw includes an **autonomous AI pentesting assistant** built on a Kali Linux sandbox. The agent can run reconnaissance, vulnerability scanning, and exploitation workflows using 21 industry-standard security tools.
+
+**Quick start:**
+
+```bash
+# Build the security sandbox
+docker-compose build security-sandbox
+
+# Start Juice Shop demo target
+docker-compose up -d juice-shop
+
+# Run autonomous pentest
+openclaw security scan juice-shop:3000 --recon --vuln
+
+# Or run the full demo script
+./scripts/juice-shop-demo.sh
+```
+
+**Included tools:** nmap, masscan, subfinder, amass, whatweb, nuclei, nikto, ffuf, httpx, wpscan, sqlmap, xsstrike, testssl.sh, searchsploit, metasploit-framework, hydra, john, gowitness, jq.
+
+**Documentation:**
+- [Getting Started](docs/security/getting-started.md)
+- [Tools Reference](docs/security/tools.md)
+- [Rate Limiting](docs/security/rate-limiting.md)
+
+⚠️ **Warning:** Only use against systems you own or have explicit written authorization to test. See [SECURITY-DISCLAIMER.md](SECURITY-DISCLAIMER.md).
+
 ## Highlights
 
 - **[Local-first Gateway](https://docs.openclaw.ai/gateway)** — single control plane for sessions, channels, tools, and events.
