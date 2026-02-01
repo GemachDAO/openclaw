@@ -43,3 +43,42 @@ services:
     tty: true
     init: true
     entrypoint: ["node", "dist/index.js"]
+
+  # =============================================================================
+  # OPENCLAW SECURITY - Autonomous Pentesting Assistant
+  # =============================================================================
+
+  security-sandbox:
+    build:
+      context: .
+      dockerfile: Dockerfile.security
+    image: openclaw-security:latest
+    container_name: openclaw-security-sandbox
+    hostname: security-sandbox
+    networks:
+      - security-net
+    volumes:
+      - ${OPENCLAW_WORKSPACE_DIR:-./workspace}:/workspace
+      - security-reports:/reports
+    cap_drop:
+      - ALL
+    cap_add:
+      # Required for some network scanning tools
+      - NET_RAW
+      - NET_ADMIN
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 4g
+    cpus: 2
+    pids_limit: 1024
+    stdin_open: true
+    tty: true
+    init: true
+    restart: unless-stopped
+
+networks:
+  security-net:
+    driver: bridge
+
+volumes:
+  security-reports:
