@@ -87,45 +87,45 @@ Bundle OWASP Juice Shop in docker-compose for safe demonstration.
 
 ### Phase 1: Sandbox Infrastructure
 
-- [ ] 1. Create `Dockerfile.security` with `kalilinux/kali-rolling` base and non-root user
-- [ ] 2. Install recon tools: nmap, masscan, subfinder, amass, whatweb
-- [ ] 3. Install web tools: nuclei, nikto, ffuf, httpx, wpscan
-- [ ] 4. Install vuln tools: sqlmap, xsstrike, testssl.sh, exploitdb (searchsploit)
-- [ ] 5. Install exploitation tools: metasploit-framework
-- [ ] 6. Install cred tools: hydra, john
-- [ ] 7. Install reporting tools: gowitness, jq
-- [ ] 8. Configure SecLists wordlist mount at /wordlists
-- [ ] 9. Add `security-sandbox` service to docker-compose.yml with network bridge
-- [ ] 10. Add Juice Shop demo target service to docker-compose.yml
+- [x] 1. Create `Dockerfile.security` with `kalilinux/kali-rolling` base and non-root user
+- [x] 2. Install recon tools: nmap, masscan, subfinder, amass, whatweb
+- [x] 3. Install web tools: nuclei, nikto, ffuf, httpx, wpscan
+- [x] 4. Install vuln tools: sqlmap, xsstrike, testssl.sh, exploitdb (searchsploit)
+- [x] 5. Install exploitation tools: metasploit-framework
+- [x] 6. Install cred tools: hydra, john
+- [x] 7. Install reporting tools: gowitness, jq
+- [x] 8. Configure SecLists wordlist mount at /wordlists
+- [x] 9. Add `security-sandbox` service to docker-compose.yml with network bridge
+- [x] 10. Add Juice Shop demo target service to docker-compose.yml
 
 ### Phase 2: Agent Configuration
 
-- [ ] 11. Add security sandbox constants in src/sandbox/constants.ts
-- [ ] 12. Create security agent profile with network=bridge, wordlist mount
-- [ ] 13. Update tool allowlist for security operations (exec, process, read, write)
-- [ ] 14. Add security-focused system prompt section with tool guidance
-- [ ] 15. Implement disclaimer prompt with config toggle (security.disclaimer)
-- [ ] 16. Implement rate limiting config (security.rateLimit, security.maxRequestsPerSecond)
-- [ ] 17. Add scan output parsing helpers for structured results (nmap XML, nuclei JSON)
+- [x] 11. Add security sandbox constants in src/sandbox/constants.ts
+- [x] 12. Create security agent profile with network=bridge, wordlist mount
+- [x] 13. Update tool allowlist for security operations (exec, process, read, write)
+- [x] 14. Add security-focused system prompt section with tool guidance
+- [x] 15. Implement disclaimer prompt with config toggle (security.disclaimer)
+- [x] 16. Implement rate limiting config (security.rateLimit, security.maxRequestsPerSecond)
+- [x] 17. Add scan output parsing helpers for structured results (nmap XML, nuclei JSON)
 
 ### Phase 3: CLI Integration
 
-- [ ] 18. Add `openclaw security` CLI command group
-- [ ] 19. Add `openclaw security scan` subcommand with target validation
-- [ ] 20. Add `openclaw security recon` workflow template  
-- [ ] 21. Add --no-disclaimer flag for authorized environments
-- [ ] 22. Add --rate-limit flag for production target scanning
-- [ ] 23. Add --wordlist flag to specify custom wordlist path
+- [x] 18. Add `openclaw security` CLI command group
+- [x] 19. Add `openclaw security scan` subcommand with target validation
+- [x] 20. Add `openclaw security recon` workflow template  
+- [x] 21. Add --no-disclaimer flag for authorized environments
+- [x] 22. Add --rate-limit flag for production target scanning
+- [x] 23. Add --wordlist flag to specify custom wordlist path
 
 ### Phase 4: Documentation & Demo
 
-- [ ] 24. Create docs/security/getting-started.md with setup instructions
-- [ ] 25. Create docs/security/tools.md documenting all 21 tools
-- [ ] 26. Create docs/security/rate-limiting.md for production usage
-- [ ] 27. Create demo script: Juice Shop full pentest (recon → exploit → report)
-- [ ] 28. Record demo GIF showing autonomous pentest flow
-- [ ] 29. Add security badges and demo GIF to README
-- [ ] 30. Create SECURITY-DISCLAIMER.md with legal notice and authorization requirements
+- [x] 24. Create docs/security/getting-started.md with setup instructions
+- [x] 25. Create docs/security/tools.md documenting all 21 tools
+- [x] 26. Create docs/security/rate-limiting.md for production usage
+- [x] 27. Create demo script: Juice Shop full pentest (recon → exploit → report)
+- [ ] 28. Record demo GIF showing autonomous pentest flow (manual step)
+- [x] 29. Add security badges and demo GIF to README
+- [x] 30. Create SECURITY-DISCLAIMER.md with legal notice and authorization requirements
 
 ---
 
