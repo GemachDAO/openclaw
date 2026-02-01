@@ -2,11 +2,6 @@ import type { Command } from "commander";
 import { loadConfig } from "../config/config.js";
 import { defaultRuntime } from "../runtime.js";
 import { runSecurityAudit } from "../security/audit.js";
-import { fixSecurityFootguns } from "../security/fix.js";
-import { formatDocsLink } from "../terminal/links.js";
-import { isRich, theme } from "../terminal/theme.js";
-import { shortenHomeInString, shortenHomePath } from "../utils.js";
-import { formatCliCommand } from "./command-format.js";
 import {
   showSecurityDisclaimer,
   printSecurityBanner,
@@ -15,6 +10,7 @@ import {
   formatOutOfScopeWarning,
   type SecurityConfig,
 } from "../security/disclaimer.js";
+import { fixSecurityFootguns } from "../security/fix.js";
 import {
   createProductionRateLimitConfig,
   createLabRateLimitConfig,
@@ -24,6 +20,10 @@ import {
   buildSecurityPromptSection,
   getJuiceShopTargetInfo,
 } from "../security/system-prompt-security.js";
+import { formatDocsLink } from "../terminal/links.js";
+import { isRich, theme } from "../terminal/theme.js";
+import { shortenHomeInString, shortenHomePath } from "../utils.js";
+import { formatCliCommand } from "./command-format.js";
 
 type SecurityAuditOptions = {
   json?: boolean;
@@ -221,8 +221,10 @@ export function registerSecurityCli(program: Command) {
 
       console.log("");
       console.log(theme.heading(" OpenClaw Security Scan "));
-      console.log(`Target: ${theme.bold(target)}`);
-      console.log(`Rate limiting: ${config.rateLimit ? theme.success("enabled") : theme.warn("disabled")}`);
+      console.log(`Target: ${theme.heading(target)}`);
+      console.log(
+        `Rate limiting: ${config.rateLimit ? theme.success("enabled") : theme.warn("disabled")}`,
+      );
 
       // Determine scan phases
       const phases: string[] = [];
@@ -246,7 +248,10 @@ export function registerSecurityCli(program: Command) {
 
       if (phases.includes("recon")) {
         console.log(theme.heading("📡 Reconnaissance Phase"));
-        const nmapCmd = injectRateLimits(`nmap -sV -sC -oA nmap_${target.replace(/[^a-zA-Z0-9]/g, "_")} ${target}`, rateLimitConfig);
+        const nmapCmd = injectRateLimits(
+          `nmap -sV -sC -oA nmap_${target.replace(/[^a-zA-Z0-9]/g, "_")} ${target}`,
+          rateLimitConfig,
+        );
         console.log(`  ${theme.muted("$")} ${nmapCmd}`);
         const subfinderCmd = `subfinder -d ${target} -o subdomains.txt`;
         console.log(`  ${theme.muted("$")} ${subfinderCmd}`);
@@ -255,9 +260,15 @@ export function registerSecurityCli(program: Command) {
 
       if (phases.includes("web")) {
         console.log(theme.heading("🌐 Web Application Phase"));
-        const nucleiCmd = injectRateLimits(`nuclei -u https://${target} -t cves/ -o nuclei_results.json -json`, rateLimitConfig);
+        const nucleiCmd = injectRateLimits(
+          `nuclei -u https://${target} -t cves/ -o nuclei_results.json -json`,
+          rateLimitConfig,
+        );
         console.log(`  ${theme.muted("$")} ${nucleiCmd}`);
-        const ffufCmd = injectRateLimits(`ffuf -u https://${target}/FUZZ -w /wordlists/Discovery/Web-Content/common.txt -o ffuf_results.json -of json`, rateLimitConfig);
+        const ffufCmd = injectRateLimits(
+          `ffuf -u https://${target}/FUZZ -w /wordlists/Discovery/Web-Content/common.txt -o ffuf_results.json -of json`,
+          rateLimitConfig,
+        );
         console.log(`  ${theme.muted("$")} ${ffufCmd}`);
         console.log("");
       }
@@ -295,7 +306,7 @@ export function registerSecurityCli(program: Command) {
       console.log("");
       console.log(theme.heading(" OpenClaw Reconnaissance "));
       console.log("");
-      console.log(theme.bold("Recommended recon workflow:"));
+      console.log(theme.heading("Recommended recon workflow:"));
       console.log("");
       console.log(`1. ${theme.info("Subdomain enumeration:")}`);
       console.log(`   subfinder -d ${target} -o subs.txt`);
@@ -330,7 +341,7 @@ export function registerSecurityCli(program: Command) {
 
       const targetInfo = getJuiceShopTargetInfo();
 
-      console.log(theme.bold("🎯 Demo Target: OWASP Juice Shop"));
+      console.log(theme.heading("🎯 Demo Target: OWASP Juice Shop"));
       console.log("");
       console.log(theme.success("In Scope:"));
       for (const item of targetInfo.scope ?? []) {
@@ -343,7 +354,7 @@ export function registerSecurityCli(program: Command) {
       }
       console.log("");
 
-      console.log(theme.bold("Demo commands:"));
+      console.log(theme.heading("Demo commands:"));
       console.log("");
       console.log("# Start the demo environment");
       console.log("docker-compose up -d security-sandbox juice-shop");
@@ -360,7 +371,9 @@ export function registerSecurityCli(program: Command) {
       console.log("nikto -h http://juice-shop:3000");
       console.log("");
       console.log("# Fuzz for hidden endpoints");
-      console.log("ffuf -u http://juice-shop:3000/FUZZ -w /wordlists/Discovery/Web-Content/common.txt");
+      console.log(
+        "ffuf -u http://juice-shop:3000/FUZZ -w /wordlists/Discovery/Web-Content/common.txt",
+      );
       console.log("");
 
       console.log(theme.success("Happy hacking! 🔥"));

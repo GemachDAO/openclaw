@@ -6,8 +6,8 @@
  * capabilities, and tool permissions.
  */
 
-import type { SandboxDockerSettings } from "../../config/types.sandbox.js";
 import type { AgentConfig } from "../../config/types.agents.js";
+import type { SandboxDockerSettings } from "../../config/types.sandbox.js";
 import {
   SECURITY_SANDBOX_CAP_ADD,
   SECURITY_SANDBOX_CONTAINER_PREFIX,
@@ -32,7 +32,7 @@ export const SECURITY_DOCKER_CONFIG: SandboxDockerSettings = {
   network: SECURITY_SANDBOX_NETWORK,
   // Security tools need some capabilities for raw packet operations
   capDrop: ["ALL"],
-  capAdd: [...SECURITY_SANDBOX_CAP_ADD],
+  // Note: capAdd is set at runtime via Docker CLI flags
   // Allow read-only root but with writable workspace and reports
   readOnlyRoot: false,
   tmpfs: ["/tmp:size=2G", "/var/tmp", "/run"],
