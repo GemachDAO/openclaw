@@ -36,6 +36,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN mkdir -p /workspace /wordlists /reports && \
     chown -R openclaw:openclaw /workspace /reports
 
+# =============================================================================
+# PHASE 1: RECONNAISSANCE TOOLS
+# =============================================================================
+
+# Install recon tools from Kali repos
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nmap \
+    masscan \
+    amass \
+    whatweb \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install subfinder (Go-based, latest from GitHub)
+RUN curl -sSL https://github.com/projectdiscovery/subfinder/releases/latest/download/subfinder_linux_amd64.zip -o /tmp/subfinder.zip && \
+    unzip /tmp/subfinder.zip -d /usr/local/bin/ && \
+    chmod +x /usr/local/bin/subfinder && \
+    rm /tmp/subfinder.zip
+
 WORKDIR /workspace
 
 # Keep container running for exec commands
