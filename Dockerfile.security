@@ -82,6 +82,20 @@ RUN curl -sSL https://github.com/ffuf/ffuf/releases/latest/download/ffuf_linux_a
     chmod +x /usr/local/bin/ffuf && \
     rm /tmp/ffuf.tar.gz
 
+# =============================================================================
+# PHASE 3: VULNERABILITY ASSESSMENT TOOLS
+# =============================================================================
+
+# Install vuln tools from Kali repos
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    sqlmap \
+    exploitdb \
+    testssl.sh \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install XSStrike (Python-based XSS scanner)
+RUN pip3 install --no-cache-dir --break-system-packages xsstrike
+
 WORKDIR /workspace
 
 # Keep container running for exec commands
